@@ -2,7 +2,7 @@ const express = require('express');
 let app = express();
 const bodyParser = require('body-parser');
 const helpers = require('../helpers/github.js');
-const dbSave = require('../database/index.js')
+const db = require('../database/index.js')
 
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.json());
@@ -14,10 +14,15 @@ app.post('/repos', function (req, res) {
   // save the repo information in the database
   helpers.getReposByUsername(req.body.username, (err, data) => {
     if (err) {
-      res.sendStatus(500);
+      res.status(500).send();
     } else {
-      dbSave.save(data);
-      res.sendStatus(200);
+      db.save(data, (err, result) => {
+        if (err) {
+          res.status(500).send();
+        } else {
+          res.status(201).send(JSON.stringify(result));
+        }
+      });
     }
   });
 
@@ -26,6 +31,14 @@ app.post('/repos', function (req, res) {
 app.get('/repos', function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
+  db.getRepos((err, result) => {
+    if (err) {
+      res.status(500).send();
+    } else {
+      //console.log('succes in app.get repos', JSON.stringify(result));
+      res.status(200).send(JSON.stringify(result));
+    }
+  });
 });
 
 let port = 1128;
