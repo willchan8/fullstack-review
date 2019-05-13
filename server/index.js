@@ -20,7 +20,7 @@ app.post('/repos', function (req, res) {
         if (err) {
           res.status(500).send();
         } else {
-          res.status(201).send(JSON.stringify(result));
+          res.status(201).send(result);
         }
       });
     }
@@ -35,8 +35,7 @@ app.get('/repos', function (req, res) {
     if (err) {
       res.status(500).send();
     } else {
-      //console.log('succes in app.get repos', JSON.stringify(result));
-      res.status(200).send(JSON.stringify(result));
+      res.status(200).send(result);
     }
   });
 });

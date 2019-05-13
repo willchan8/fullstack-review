@@ -19,8 +19,6 @@ let getReposByUsername = (username, callback) => {
     if (error) {
       callback(error); // Print the error if one occurred
     } else {
-      // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-      // console.log('body:', JSON.parse(body)); // Print the HTML for the Github homepage.
       callback(null, body);
     }
   });
